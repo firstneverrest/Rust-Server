@@ -1,6 +1,7 @@
 use std::net::TcpListener;
 use std::io::Read;
-use std::str;
+use crate::http::Result;
+use crate::http::Request;
 
 pub struct Server {
     addr: String,
@@ -20,7 +21,7 @@ impl Server {
     //     Ok(())
     // }
 
-    pub fn run(&self) -> std::io::Result<()> {
+    pub fn run(&self) -> Result<()> {
         println!("Listening on http://{}", self.addr);
 
         // ? is used to throw error
@@ -31,11 +32,9 @@ impl Server {
             let mut stream = stream?;
             let mut buf: [u8; 1024] = [0; 1024]; // buffer
             stream.read(&mut buf)?;
-            
-            if let Ok(request) = str::from_utf8(&buf) {
-                println!("Request: {}", request);
-            }
-            // println!("Connection established!");
+
+            let request = Request::try_from(&buf[..])?; // must send slice of utf8
+            println!("{:#?}", request); // {:#?} print object and format it
         }
         
         Ok(())
