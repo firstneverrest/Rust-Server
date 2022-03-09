@@ -1,6 +1,6 @@
 # Rust Server
 
-This project aim to create HTTP server with Rust standard library.
+This project aim to create HTTP server with Rust standard library, including handling GET, POST, PUT, DELETE request, display log and response message.
 
 ## Create Rust Project
 
